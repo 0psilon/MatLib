@@ -66,7 +66,6 @@ def mul(matrix_1: list[list[float | int]],
     return matrix
 
 
-
 def pow(matrix: list[list[float | int]],
         exp: int = 1
         ) -> list[list[float | int]]:
