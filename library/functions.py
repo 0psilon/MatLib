@@ -1,12 +1,20 @@
-def det(matrix: list[list[float | int]]) -> float:
+import matlib as ml
+from check import MatrixException
+
+
+def det(matrix: ml.Matrix) -> float:
+
+    if not isinstance(matrix, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
 
     n = len(matrix)
     
     for line in matrix:
-        assert len(line) == n, 'Given matrix is not a square matrix'
+        if len(line) != n:
+            raise MatrixException('Given matrix is not a square matrix')
 
     counter = 0
-    ans = 1
+    ans = 1.
 
     # checking if not a zero column
     for g in range(n): 
@@ -14,7 +22,7 @@ def det(matrix: list[list[float | int]]) -> float:
             counter += 1
 
     if counter == n:
-        ans = 0
+        ans = 0.
 
     # making a triangular matrix
     else:
@@ -40,78 +48,103 @@ def det(matrix: list[list[float | int]]) -> float:
     return ans
 
 
-def mul(matrix_1: list[list[float | int]],
-        matrix_2: list[list[float | int]]
-        ) -> list[list[float]]:
+def mul(matrix_1: ml.Matrix,
+        matrix_2: ml.Matrix
+        ) -> ml.Matrix:
     
+    if not isinstance(matrix_1, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
+    
+    if not isinstance(matrix_2, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
+
     n, m = len(matrix_1), len(matrix_1[0])
     d, k = len(matrix_2), len(matrix_2[0])
 
-    assert d == m, "Matrix dimensions are incompatible"
+    if d != m:
+        raise MatrixException('Matrix dimensions are incompatible')
 
-    for line in matrix_1:
-        assert len(line) == m, 'Matrix 1 has arbitrary dimensions'
+    for line_1, line_2 in zip(matrix_1.matrix, matrix_2.matrix):
+        if len(line_1) != m:
+            raise MatrixException('Matrix 1 has arbitrary dimensions')
     
-    for line in matrix_2:
-        assert len(line) == k, 'Matrix 2 has arbitrary dimensions'        
+        if len(line_2) != k:
+            raise MatrixException('Matrix 2 has arbitrary dimensions')
     
-    matrix = [[0] * k for _ in range(n)]
+    res_matrix = [[0.] * k for _ in range(n)]
 
     # resulting matrix calculation
     for i in range(n): 
         for v in range(k):
             for j in range(m):
-                matrix[i][v] += matrix_1[i][j] * matrix_2[j][v]
+                res_matrix[i][v] += matrix_1[i][j] * matrix_2[j][v]
     
-    return matrix
+    return ml.Matrix(res_matrix)
 
 
-def pow(matrix: list[list[float | int]],
+def pow(matrix: ml.Matrix,
         exp: int = 1
-        ) -> list[list[float | int]]:
+        ) -> ml.Matrix:
+
+    if not isinstance(matrix, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
     
-    assert exp > 0, 'Exponent must be positive'
+    if not isinstance(exp, int):
+        raise TypeError('Exponent must be of the type integer')
+
+    if exp <= 0:
+        raise TypeError('Exponent must be positive')
+    
     exp -= 1
 
     n = len(matrix)
     
-    for line in matrix:
-        assert len(line) == n, 'Given matrix is not a square matrix'
+    for line in matrix.matrix:
+        if len(line) != n:
+            raise MatrixException('Given matrix is not a square matrix')
     
-    result = [[0] * n for _ in range(n)]
-    base = matrix.copy()
+    result = [[0.] * n for _ in range(n)]
+    base = matrix.matrix.copy()
 
-    while exp > 0: #calculation
+    while exp > 0:
         for i in range(n):
             for v in range(n):
                 for j in range(n):
                     result[i][v] += base[i][j] * matrix[j][v]
         base = result.copy()
-        result = [[0] * n for _ in range(n)]
+        result = [[0.] * n for _ in range(n)]
         exp -= 1
     
-    return base
+    return ml.Matrix(base)
 
 
-def least_squares(matrix: list[list[float | int]],
-                  matrix_ans: list[list[float | int]],
+def least_squares(matrix: ml.Matrix,
+                  matrix_ans: ml.Matrix,
                   eps: float = 1e-6
-                  ) -> list[float]:
+                  ) -> ml.Matrix:
+    
+    if not isinstance(matrix, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
+    
+    if not isinstance(matrix_ans, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
 
     n, m = len(matrix), len(matrix[0])
 
-    assert n == len(matrix_ans), 'Dimensions of matrices are incompatible'
+    if len(matrix_ans) != n:
+        raise MatrixException('Dimensions of matrices are incompatible')
 
-    for line in matrix:
-        assert len(line) == m, 'Matrix has arbitrary dimensions'
+    for line_1, line_2 in zip(matrix, matrix_ans):
+        if len(line_1) != m:
+            raise MatrixException('Matrix has arbitrary dimensions')
     
-    for line in matrix_ans:
-        assert len(line) == 1, 'Matrix of answers has more than 1 value per line'
+        if len(line_2) != 1:
+            raise MatrixException('Matrix of answers has more than 1 value per line')
 
     result = []
 
     # создаем транспонированную матрицу векторов, заполненную нулями
-    matrix_T = [[0] * n for _ in range(m)]
+    matrix_T = ml.Matrix([[0.] * n for _ in range(m)])
         
     # заполняем матрицы значениями
     for i in range(m):
@@ -158,23 +191,31 @@ def least_squares(matrix: list[list[float | int]],
     result.append(x)
     result.reverse()
     
-    return result
+    return ml.Matrix([[x] for x in result])
 
 
-def gaussian_elimination(matrix: list[list[float | int]],
-                         matrix_ans: list[list[float | int]],
+def gaussian_elimination(matrix: ml.Matrix,
+                         matrix_ans: ml.Matrix,
                          eps: float = 1e-6
-                         ) -> list[float]:
+                         ) -> ml.Matrix:
+    
+    if not isinstance(matrix, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
+    
+    if not isinstance(matrix_ans, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
     
     n, m = len(matrix), len(matrix[0])
 
-    assert n == len(matrix_ans), 'Dimensions of matrices are incompatible'
+    if len(matrix_ans) != n:
+        raise MatrixException('Dimensions of matrices are incompatible')
 
-    for line in matrix:
-        assert len(line) == m, 'Matrix has arbitrary dimensions'
+    for line_1, line_2 in zip(matrix, matrix_ans):
+        if len(line_1) != m:
+            raise MatrixException('Matrix has arbitrary dimensions')
     
-    for line in matrix_ans:
-        assert len(line) == 1, 'Matrix of answers has more than 1 value per line'
+        if len(line_2) != 1:
+            raise MatrixException('Matrix of answers has more than 1 value per line')
     
     matrix_w = [matrix[i].copy() for i in range(n)]
 
@@ -203,7 +244,6 @@ def gaussian_elimination(matrix: list[list[float | int]],
     counter1, counter2 = 0, 0 
 
     for i in matrix_w:
-
         for j in i:
             if abs(j) < eps:
                 counter1 += 1
@@ -233,17 +273,15 @@ def gaussian_elimination(matrix: list[list[float | int]],
     if rank1 != rank2: 
         print('System of equations cannot be solved')
         
-        return []
+        return ml.Matrix([[]])
         
     else:
-
         if rank1 != m:
             print('System of equations has infinite amount of answers')
             
-            return []
+            return ml.Matrix([[]])
             
-        else:
-            
+        else:            
             j, f = -1, -2
             for i in range(rank1 - 1, 0, -1):
                 x = matrix_w[i][j] / matrix_w[i][f]
@@ -256,4 +294,4 @@ def gaussian_elimination(matrix: list[list[float | int]],
             result.append(x)
             result.reverse()
 
-            return result
+            return ml.Matrix([[x] for x in result])
