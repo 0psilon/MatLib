@@ -6,13 +6,12 @@ def det(matrix: ml.Matrix) -> float:
 
     if not isinstance(matrix, ml.Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
-
-    n = len(matrix)
     
     for line in matrix:
-        if len(line) != n:
+        if len(line) != len(matrix):
             raise MatrixException('Given matrix is not a square matrix')
 
+    n = len(matrix)
     counter = 0
     ans = 1.
 
@@ -58,18 +57,18 @@ def mul(matrix_1: ml.Matrix,
     if not isinstance(matrix_2, ml.Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
 
-    n, m = len(matrix_1), len(matrix_1[0])
-    d, k = len(matrix_2), len(matrix_2[0])
-
-    if d != m:
+    if len(matrix_2) != len(matrix_1[0]):
         raise MatrixException('Matrix dimensions are incompatible')
 
     for line_1, line_2 in zip(matrix_1.matrix, matrix_2.matrix):
-        if len(line_1) != m:
+        if len(line_1) != len(matrix_1[0]):
             raise MatrixException('Matrix 1 has arbitrary dimensions')
     
-        if len(line_2) != k:
+        if len(line_2) != len(matrix_2[0]):
             raise MatrixException('Matrix 2 has arbitrary dimensions')
+    
+    n, m = len(matrix_1), len(matrix_1[0])
+    _, k = len(matrix_2), len(matrix_2[0])
     
     res_matrix = [[0.] * k for _ in range(n)]
 
@@ -96,26 +95,41 @@ def pow(matrix: ml.Matrix,
         raise TypeError('Exponent must be positive')
     
     exp -= 1
-
     n = len(matrix)
     
     for line in matrix.matrix:
         if len(line) != n:
             raise MatrixException('Given matrix is not a square matrix')
     
-    result = [[0.] * n for _ in range(n)]
     base = matrix.matrix.copy()
 
     while exp > 0:
+        result = [[0.] * n for _ in range(n)]
+
         for i in range(n):
             for v in range(n):
                 for j in range(n):
                     result[i][v] += base[i][j] * matrix[j][v]
-        base = result.copy()
-        result = [[0.] * n for _ in range(n)]
+
+        base = result.copy()        
         exp -= 1
     
     return ml.Matrix(base)
+
+
+def transpose(matrix: ml.Matrix):
+
+    if not isinstance(matrix, ml.Matrix):
+        raise MatrixException('Given matrix must be an instance of the Matrix class')
+
+    n, m = len(matrix), len(matrix[0])
+    matrix_T = [[0.] * n for _ in range(m)]
+        
+    for i in range(m):
+        for j in range(n):
+            matrix_T[i][j] = matrix[j][i]
+    
+    return ml.Matrix(matrix_T)
 
 
 def least_squares(matrix: ml.Matrix,
@@ -129,27 +143,21 @@ def least_squares(matrix: ml.Matrix,
     if not isinstance(matrix_ans, ml.Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
 
-    n, m = len(matrix), len(matrix[0])
-
-    if len(matrix_ans) != n:
+    if len(matrix_ans) != len(matrix):
         raise MatrixException('Dimensions of matrices are incompatible')
 
     for line_1, line_2 in zip(matrix, matrix_ans):
-        if len(line_1) != m:
+        if len(line_1) != len(matrix[0]):
             raise MatrixException('Matrix has arbitrary dimensions')
     
         if len(line_2) != 1:
             raise MatrixException('Matrix of answers has more than 1 value per line')
 
     result = []
+    m = len(matrix[0])
 
-    # создаем транспонированную матрицу векторов, заполненную нулями
-    matrix_T = ml.Matrix([[0.] * n for _ in range(m)])
-        
-    # заполняем матрицы значениями
-    for i in range(m):
-        for j in range(n):
-            matrix_T[i][j] = matrix[j][i]
+    # транспонируем
+    matrix_T = transpose(matrix)
             
     # перемножаем матрицы        
     a = mul(matrix_T, matrix)
@@ -204,25 +212,23 @@ def gaussian_elimination(matrix: ml.Matrix,
     
     if not isinstance(matrix_ans, ml.Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
-    
-    n, m = len(matrix), len(matrix[0])
 
-    if len(matrix_ans) != n:
+    if len(matrix_ans) != len(matrix):
         raise MatrixException('Dimensions of matrices are incompatible')
 
     for line_1, line_2 in zip(matrix, matrix_ans):
-        if len(line_1) != m:
+        if len(line_1) != len(matrix[0]):
             raise MatrixException('Matrix has arbitrary dimensions')
     
         if len(line_2) != 1:
             raise MatrixException('Matrix of answers has more than 1 value per line')
     
+    result = []
+    n, m = len(matrix), len(matrix[0])    
     matrix_w = [matrix[i].copy() for i in range(n)]
 
     for i in range(n):
         matrix_w[i].extend(matrix_ans[i])
-
-    result = []
 
     for rep in range(min(m, n)):
         

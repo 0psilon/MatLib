@@ -6,14 +6,29 @@ class Matrix:
         
         self.matrix = MatrixCheck(matrix=matrix).matrix
 
+    @property
+    def T(self):
+        return self._transpose()
+
+    def _transpose(self):
+        n, m = len(self.matrix), len(self.matrix[0])
+        matrix_T = [[0.] * n for _ in range(m)]
+            
+        for i in range(m):
+            for j in range(n):
+                matrix_T[i][j] = self.matrix[j][i]
+
+        return Matrix(matrix_T)
+
     def __len__(self):
         return len(self.matrix)
     
     def __str__(self):
         obj = '\n'.join([' ' + str(line).rjust(1) for line in self.matrix])
         obj = '[' + obj[1:] + ']'
+
         return obj
-    
+        
     def __getitem__(self, item):
         if isinstance(item, int):
             return self.matrix[item]
@@ -37,8 +52,7 @@ class Matrix:
             if len(self.matrix) != len(ent):
                 raise MatrixException('Matrices have incompatible lengths')
 
-            for i, line in enumerate(self.matrix):
-                
+            for i, line in enumerate(self.matrix):                
                 if len(line) != len(ent[i]):
                     raise MatrixException('Matrices have arbitrary dimensions')
 
@@ -66,8 +80,7 @@ class Matrix:
             if len(self.matrix) != len(ent):
                 raise MatrixException('Matrices have incompatible lengths')
 
-            for i, line in enumerate(self.matrix):
-                
+            for i, line in enumerate(self.matrix):                
                 if len(line) != len(ent[i]):
                     raise MatrixException('Matrices have arbitrary dimensions')
 
@@ -95,8 +108,7 @@ class Matrix:
             if len(self.matrix) != len(ent):
                 raise MatrixException('Matrices have incompatible lengths')
 
-            for i, line in enumerate(self.matrix):
-                
+            for i, line in enumerate(self.matrix):                
                 if len(line) != len(ent[i]):
                     raise MatrixException('Matrices have arbitrary dimensions')
 
@@ -124,8 +136,7 @@ class Matrix:
             if len(self.matrix) != len(ent):
                 raise MatrixException('Matrices have incompatible lengths')
 
-            for i, line in enumerate(self.matrix):
-                
+            for i, line in enumerate(self.matrix):                
                 if len(line) != len(ent[i]):
                     raise MatrixException('Matrices have arbitrary dimensions')
 
