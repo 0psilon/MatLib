@@ -1,10 +1,10 @@
-import matlib as ml
-from check import MatrixException
+from .classes import Matrix
+from .check import MatrixException
 
 
-def det(matrix: ml.Matrix) -> float:
+def det(matrix: Matrix) -> float:
 
-    if not isinstance(matrix, ml.Matrix):
+    if not isinstance(matrix, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
     
     for line in matrix:
@@ -47,14 +47,14 @@ def det(matrix: ml.Matrix) -> float:
     return ans
 
 
-def mul(matrix_1: ml.Matrix,
-        matrix_2: ml.Matrix
-        ) -> ml.Matrix:
+def mul(matrix_1: Matrix,
+        matrix_2: Matrix
+        ) -> Matrix:
     
-    if not isinstance(matrix_1, ml.Matrix):
+    if not isinstance(matrix_1, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
     
-    if not isinstance(matrix_2, ml.Matrix):
+    if not isinstance(matrix_2, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
 
     if len(matrix_2) != len(matrix_1[0]):
@@ -78,14 +78,14 @@ def mul(matrix_1: ml.Matrix,
             for j in range(m):
                 res_matrix[i][v] += matrix_1[i][j] * matrix_2[j][v]
     
-    return ml.Matrix(res_matrix)
+    return Matrix(res_matrix)
 
 
-def pow(matrix: ml.Matrix,
+def pow(matrix: Matrix,
         exp: int = 1
-        ) -> ml.Matrix:
+        ) -> Matrix:
 
-    if not isinstance(matrix, ml.Matrix):
+    if not isinstance(matrix, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
     
     if not isinstance(exp, int):
@@ -114,12 +114,12 @@ def pow(matrix: ml.Matrix,
         base = result.copy()        
         exp -= 1
     
-    return ml.Matrix(base)
+    return Matrix(base)
 
 
-def transpose(matrix: ml.Matrix):
+def transpose(matrix: Matrix):
 
-    if not isinstance(matrix, ml.Matrix):
+    if not isinstance(matrix, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
 
     n, m = len(matrix), len(matrix[0])
@@ -129,18 +129,18 @@ def transpose(matrix: ml.Matrix):
         for j in range(n):
             matrix_T[i][j] = matrix[j][i]
     
-    return ml.Matrix(matrix_T)
+    return Matrix(matrix_T)
 
 
-def least_squares(matrix: ml.Matrix,
-                  matrix_ans: ml.Matrix,
+def least_squares(matrix: Matrix,
+                  matrix_ans: Matrix,
                   eps: float = 1e-6
-                  ) -> ml.Matrix:
+                  ) -> Matrix:
     
-    if not isinstance(matrix, ml.Matrix):
+    if not isinstance(matrix, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
     
-    if not isinstance(matrix_ans, ml.Matrix):
+    if not isinstance(matrix_ans, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
 
     if len(matrix_ans) != len(matrix):
@@ -208,22 +208,22 @@ def least_squares(matrix: ml.Matrix,
         result.append(x)
         result.reverse()
         
-        return ml.Matrix([[x] for x in result])
+        return Matrix([[x] for x in result])
 
     else:
         print('System of equations cannot be solved')
-        return ml.Matrix([[]])
+        return Matrix([[]])
 
 
-def gaussian_elimination(matrix: ml.Matrix,
-                         matrix_ans: ml.Matrix,
+def gaussian_elimination(matrix: Matrix,
+                         matrix_ans: Matrix,
                          eps: float = 1e-6
-                         ) -> ml.Matrix:
+                         ) -> Matrix:
     
-    if not isinstance(matrix, ml.Matrix):
+    if not isinstance(matrix, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
     
-    if not isinstance(matrix_ans, ml.Matrix):
+    if not isinstance(matrix_ans, Matrix):
         raise MatrixException('Given matrix must be an instance of the Matrix class')
 
     if len(matrix_ans) != len(matrix):
@@ -292,13 +292,13 @@ def gaussian_elimination(matrix: ml.Matrix,
     if rank1 != rank2: 
         print('System of equations cannot be solved')
         
-        return ml.Matrix([[]])
+        return Matrix([[]])
         
     else:
         if rank1 != m:
             print('System of equations has infinite amount of answers')
             
-            return ml.Matrix([[]])
+            return Matrix([[]])
             
         else:            
             j, f = -1, -2
@@ -313,4 +313,4 @@ def gaussian_elimination(matrix: ml.Matrix,
             result.append(x)
             result.reverse()
 
-            return ml.Matrix([[x] for x in result])
+            return Matrix([[x] for x in result])

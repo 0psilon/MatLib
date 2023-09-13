@@ -1,4 +1,4 @@
-from check import MatrixCheck, MatrixException
+from .check import MatrixCheck, MatrixException
 
 
 class Matrix:
