@@ -3,3 +3,4 @@ __pycache__
 notebooks/
 test.py
 poetry.toml
+dist/
