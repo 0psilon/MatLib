@@ -184,22 +184,35 @@ def least_squares(matrix: ml.Matrix,
                 for k in range(rep, m + 1):                
                     a[j][k] += -1 * coeff * a[rep][k]
 
-
-    # решаем нормальную систему уравнений из m по m
-    j, f = -1, -2
-    for i in range(m - 1, 0, -1):
-        x = a[i][j] / a[i][f]
-        result.append(x)
-                
-        for v in range(len(result)):
-            a[i - 1][j] += -1 * a[i - 1][m - 1 - v] * result[v]
-        f -= 1
-                    
-    x = a[0][j] / a[0][f]
-    result.append(x)
-    result.reverse()
+    flag = True
+    for line in a.matrix[::-1]:
+        sm = 0
+        for el in line:
+            sm += abs(el)
+        if sm < eps:
+            flag = False
+            break
     
-    return ml.Matrix([[x] for x in result])
+    if flag:
+        # решаем нормальную систему уравнений из m по m
+        j, f = -1, -2
+        for i in range(m - 1, 0, -1):
+            x = a[i][j] / a[i][f]
+            result.append(x)
+                    
+            for v in range(len(result)):
+                a[i - 1][j] += -1 * a[i - 1][m - 1 - v] * result[v]
+            f -= 1
+                        
+        x = a[0][j] / a[0][f]
+        result.append(x)
+        result.reverse()
+        
+        return ml.Matrix([[x] for x in result])
+
+    else:
+        print('System of equations cannot be solved')
+        return ml.Matrix([[]])
 
 
 def gaussian_elimination(matrix: ml.Matrix,
