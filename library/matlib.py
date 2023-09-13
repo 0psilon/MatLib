@@ -177,3 +177,33 @@ class Matrix:
          
         else:
             raise ArithmeticError('Operand is supposed to be an instance of the Matrix class')
+        
+    def __pow__(self, exp):
+    
+        if not isinstance(exp, int):
+            raise TypeError('Exponent must be of the type integer')
+
+        if exp <= 0:
+            raise TypeError('Exponent must be positive')
+        
+        exp -= 1
+        n = len(self.matrix)
+        
+        for line in self.matrix:
+            if len(line) != n:
+                raise MatrixException('Given matrix is not a square matrix')
+        
+        base = self.matrix.copy()
+
+        while exp > 0:
+            result = [[0.] * n for _ in range(n)]
+
+            for i in range(n):
+                for v in range(n):
+                    for j in range(n):
+                        result[i][v] += base[i][j] * self.matrix[j][v]
+
+            base = result.copy()        
+            exp -= 1
+        
+        return Matrix(base)
