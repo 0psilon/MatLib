@@ -9,6 +9,10 @@ class Matrix:
     @property
     def T(self):
         return self._transpose()
+    
+    @property
+    def size(self):
+        return len(self.matrix), len(self.matrix[0])
 
     def _transpose(self):
         n, m = len(self.matrix), len(self.matrix[0])
@@ -262,6 +266,122 @@ class Matrix:
 
                 for j, _ in enumerate(line):
                     self.matrix[i][j] /= ent.matrix[i][j]
+        
+            return self
+        
+        else:
+            raise ArithmeticError('Right operand is supposed to be int, float or an instance of the Matrix class')
+    
+    def __floordiv__(self, ent):        
+        res_matrix = [[None] * len(self.matrix[0]) \
+                      for _ in range(len(self.matrix))]
+
+        if isinstance(ent, (int, float)):            
+            for i, line in enumerate(self.matrix):
+                for j, el in enumerate(line):
+                    res_matrix[i][j] = el // ent
+            
+            return Matrix(res_matrix)
+
+        elif isinstance(ent, Matrix):
+            if len(self.matrix) != len(ent):
+                raise MatrixException('Matrices have incompatible lengths')
+
+            for i, line in enumerate(self.matrix):                
+                if len(line) != len(ent[i]):
+                    raise MatrixException('Matrices have arbitrary dimensions')
+
+                for j, el in enumerate(line):
+                    res_matrix[i][j] = el // ent.matrix[i][j]
+        
+            return Matrix(res_matrix)
+        
+        else:
+            raise ArithmeticError('Right operand is supposed to be int, float or an instance of the Matrix class')
+    
+    def __rfloordiv__(self, ent):
+        if isinstance(ent, (int, float)):
+            return self // ent
+        
+        else:
+            raise ArithmeticError('Left operand is supposed to be int or float')
+    
+    def __ifloordiv__(self, ent):
+        if isinstance(ent, (int, float)):            
+            for i, line in enumerate(self.matrix):
+                for j, _ in enumerate(line):
+                    self.matrix[i][j] //= ent
+            
+            return self
+
+        elif isinstance(ent, Matrix):
+            if len(self.matrix) != len(ent):
+                raise MatrixException('Matrices have incompatible lengths')
+
+            for i, line in enumerate(self.matrix):                
+                if len(line) != len(ent[i]):
+                    raise MatrixException('Matrices have arbitrary dimensions')
+
+                for j, _ in enumerate(line):
+                    self.matrix[i][j] //= ent.matrix[i][j]
+        
+            return self
+        
+        else:
+            raise ArithmeticError('Right operand is supposed to be int, float or an instance of the Matrix class')
+    
+    def __mod__(self, ent):        
+        res_matrix = [[None] * len(self.matrix[0]) \
+                      for _ in range(len(self.matrix))]
+
+        if isinstance(ent, (int, float)):            
+            for i, line in enumerate(self.matrix):
+                for j, el in enumerate(line):
+                    res_matrix[i][j] = el % ent
+            
+            return Matrix(res_matrix)
+
+        elif isinstance(ent, Matrix):
+            if len(self.matrix) != len(ent):
+                raise MatrixException('Matrices have incompatible lengths')
+
+            for i, line in enumerate(self.matrix):                
+                if len(line) != len(ent[i]):
+                    raise MatrixException('Matrices have arbitrary dimensions')
+
+                for j, el in enumerate(line):
+                    res_matrix[i][j] = el % ent.matrix[i][j]
+        
+            return Matrix(res_matrix)
+        
+        else:
+            raise ArithmeticError('Right operand is supposed to be int, float or an instance of the Matrix class')
+    
+    def __rmod__(self, ent):
+        if isinstance(ent, (int, float)):
+            return self % ent
+        
+        else:
+            raise ArithmeticError('Left operand is supposed to be int or float')
+    
+    def __imod__(self, ent):
+        if isinstance(ent, (int, float)):            
+            for i, line in enumerate(self.matrix):
+                for j, _ in enumerate(line):
+                    self.matrix[i][j] %= ent
+            
+            return self
+
+        elif isinstance(ent, Matrix):
+            if len(self.matrix) != len(ent):
+                raise MatrixException('Matrices have incompatible lengths')
+
+            for i, line in enumerate(self.matrix):                
+                if len(line) != len(ent[i]):
+                    raise MatrixException('Matrices have arbitrary dimensions')
+
+                for j, _ in enumerate(line):
+                    self.matrix[i][j] %= ent.matrix[i][j]
         
             return self
         
