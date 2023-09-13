@@ -36,8 +36,7 @@ class Matrix:
         else:
             raise TypeError('Index must be an integer')
     
-    def __add__(self, ent):
-        
+    def __add__(self, ent):        
         res_matrix = [[None] * len(self.matrix[0]) \
                       for _ in range(len(self.matrix))]
 
@@ -62,10 +61,16 @@ class Matrix:
             return Matrix(res_matrix)
         
         else:
-            raise ArithmeticError('Operand is supposed to be int, float or an instance of the Matrix class')
+            raise ArithmeticError('Right operand is supposed to be int, float or an instance of the Matrix class')
+    
+    def __radd__(self, ent):
+        if isinstance(ent, (int, float)):
+            return self + ent
         
-    def __sub__(self, ent):
+        else:
+            raise ArithmeticError('Left operand is supposed to be int or float')        
         
+    def __sub__(self, ent):        
         res_matrix = [[None] * len(self.matrix[0]) \
                       for _ in range(len(self.matrix))]
 
@@ -90,10 +95,16 @@ class Matrix:
             return Matrix(res_matrix)
         
         else:
-            raise ArithmeticError('Operand is supposed to be int, float or an instance of the Matrix class')
+            raise ArithmeticError('Right operand is supposed to be int, float or an instance of the Matrix class')
         
-    def __mul__(self, ent):
+    def __rsub__(self, ent):
+        if isinstance(ent, (int, float)):
+            return self - ent
         
+        else:
+            raise ArithmeticError('Left operand is supposed to be int or float')
+        
+    def __mul__(self, ent):        
         res_matrix = [[None] * len(self.matrix[0]) \
                       for _ in range(len(self.matrix))]
 
@@ -118,10 +129,16 @@ class Matrix:
             return Matrix(res_matrix)
         
         else:
-            raise ArithmeticError('Operand is supposed to be int, float or an instance of the Matrix class')
+            raise ArithmeticError('Right operand is supposed to be int, float or an instance of the Matrix class')
+
+    def __rmul__(self, ent):
+        if isinstance(ent, (int, float)):
+            return self * ent
         
-    def __truediv__(self, ent):
+        else:
+            raise ArithmeticError('Left operand is supposed to be int or float')
         
+    def __truediv__(self, ent):        
         res_matrix = [[None] * len(self.matrix[0]) \
                       for _ in range(len(self.matrix))]
 
@@ -146,10 +163,16 @@ class Matrix:
             return Matrix(res_matrix)
         
         else:
-            raise ArithmeticError('Operand is supposed to be int, float or an instance of the Matrix class')
+            raise ArithmeticError('Right operand is supposed to be int, float or an instance of the Matrix class')
+    
+    def __rtruediv__(self, ent):
+        if isinstance(ent, (int, float)):
+            return self / ent
         
-    def __matmul__(self, ent):
+        else:
+            raise ArithmeticError('Left operand is supposed to be int or float')
         
+    def __matmul__(self, ent):        
         if isinstance(ent, Matrix):
 
             n, m = len(self.matrix), len(self.matrix[0])
@@ -178,8 +201,7 @@ class Matrix:
         else:
             raise ArithmeticError('Operand is supposed to be an instance of the Matrix class')
         
-    def __pow__(self, exp):
-    
+    def __pow__(self, exp):    
         if not isinstance(exp, int):
             raise TypeError('Exponent must be of the type integer')
 
