@@ -2,5 +2,6 @@ __pycache__
 .venv
 notebooks/
 test.py
+test_1.py
 poetry.toml
 dist/

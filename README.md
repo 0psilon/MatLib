@@ -5,6 +5,8 @@ MatLib is a little python 2D-matrix-handling library. The following documentatio
 ### Getting started:
 ```
 pip install matlib
+
+export n_digits=2 # precision: Optional[int], default is 3
 ```
 
 ## Standard operations:
@@ -27,37 +29,37 @@ b = ml.Matrix([
 
 print(a) # casting types
 
-#[[1.0, 1.0]
-# [1.0, 1.0]
-# [1.0, 1.0]
-# [1.0, 1.0]]
+#[[1.00, 1.00]
+# [1.00, 1.00]
+# [1.00, 1.00]
+# [1.00, 1.00]]
 ```
 ```
 print(a + b) # +, -, *, /, //, %
 
-#[[3.0, 3.0]
-# [3.0, 3.0]
-# [3.0, 3.0]
-# [3.0, 3.0]]
+#[[3.00, 3.00]
+# [3.00, 3.00]
+# [3.00, 3.00]
+# [3.00, 3.00]]
 ```
 
 ```
 print(a - 100) # +, -, *, /, //, %
 
-#[[-99.0, -99.0]
-# [-99.0, -99.0]
-# [-99.0, -99.0]
-# [-99.0, -99.0]]
+#[[-99.00, -99.00]
+# [-99.00, -99.00]
+# [-99.00, -99.00]
+# [-99.00, -99.00]]
 ```
 
 ```
 a *= 2.5 # inplace
 print(a)
 
-#[[2.5, 2.5]
-# [2.5, 2.5]
-# [2.5, 2.5]
-# [2.5, 2.5]]
+#[[2.50, 2.50]
+# [2.50, 2.50]
+# [2.50, 2.50]
+# [2.50, 2.50]]
 ```
 
 ### Exponentiation:
@@ -71,8 +73,8 @@ a = ml.Matrix([
 
 print(a ** 3) # int
 
-#[[32.0, 32.0]
-# [32.0, 32.0]]
+#[[32.00, 32.00]
+# [32.00, 32.00]]
 ```
 
 ### Matrix multiplication:
@@ -93,10 +95,10 @@ b = ml.Matrix([
 
 print(a @ b)
 
-#[[12.0, 12.0, 12.0, 12.0]
-# [12.0, 12.0, 12.0, 12.0]
-# [12.0, 12.0, 12.0, 12.0]
-# [12.0, 12.0, 12.0, 12.0]]
+#[[12.00, 12.00, 12.00, 12.00]
+# [12.00, 12.00, 12.00, 12.00]
+# [12.00, 12.00, 12.00, 12.00]
+# [12.00, 12.00, 12.00, 12.00]]
 ```
 
 ### Transponing:
@@ -112,8 +114,8 @@ a = ml.Matrix([
 
 print(a.T)
 
-#[[2.0, 2.0, 2.0, 2.0]
-# [2.0, 2.0, 2.0, 2.0]]
+#[[2.00, 2.00, 2.00, 2.00]
+# [2.00, 2.00, 2.00, 2.00]]
 ```
 
 ### Getting the size:
@@ -175,10 +177,10 @@ b = ml.Matrix([
 c = ml.mul(a, b)
 print(c)
 
-#[[12.0, 12.0, 12.0, 12.0]
-# [12.0, 12.0, 12.0, 12.0]
-# [12.0, 12.0, 12.0, 12.0]
-# [12.0, 12.0, 12.0, 12.0]]
+#[[12.00, 12.00, 12.00, 12.00]
+# [12.00, 12.00, 12.00, 12.00]
+# [12.00, 12.00, 12.00, 12.00]
+# [12.00, 12.00, 12.00, 12.00]]
 ```
 
 #### 3. Matrix exponentiation:
@@ -193,12 +195,122 @@ a = ml.Matrix([
     [2, 2]
 ])
 
-b = ml.pow(a, 3) # int
-print(b) # float
+b = ml.pow(a, 3)
+print(b)
 
-#[[32.0, 32.0]
-# [32.0, 32.0]]
+#[[32.00, 32.00]
+# [32.00, 32.00]]
 
 ```
 
+#### 4. Mqtrix transposing:
+**func:** transpose(*matrix: ml.Matrix*) -> *ml.Matrix*
+```
+import matlib as ml
 
+a = ml.Matrix([
+    [2, 2],
+    [2, 2],
+    [2, 2],
+    [2, 2]
+])
+
+b = transpose(a)
+print(b)
+
+#[[2.00, 2.00, 2.00, 2.00]
+# [2.00, 2.00, 2.00, 2.00]]
+```
+
+#### 5. Least Squares method:
+
+**func:** least_squares(*matrix: ml.Matrix,
+                        matrix_ans: ml.Matrix*
+                        ) -> *ml.Matrix*
+
+Finds an approximate solution for a system of linear equations.
+
+```
+import matlib as ml
+
+a = ml.Matrix([
+    [1, 1],
+    [2, 1],
+    [1, 5],
+    [4, 1]
+])
+
+b = ml.Matrix([    
+    [1],
+    [4],
+    [3],
+    [7]
+])
+
+c = ml.least_squares(a, b)
+
+print(c)
+
+#[[1.69]
+# [0.24]]
+```
+
+#### 6. Gaussian Elimination method:
+
+**func:** gaussian_elimination(*matrix: ml.Matrix,
+                                matrix_ans: ml.Matrix*
+                                ) -> *ml.Matrix*
+
+Solves a system of linear equations using the Gaussian Elimination method. The program responds whether the answer to the system exists, does not exist or is an infinite amount of answers.
+
+```
+import matlib as ml
+
+a = ml.Matrix([
+    [3, 1, -2, 1],
+    [2, 3, -1, 2],
+    [1, -2, 2, -1],
+    [1, 3, -1, 1]
+    
+])
+
+b = ml.Matrix([
+    [5],
+    [4],
+    [4],
+    [0]
+])
+
+c = ml.gaussian_elimination(a, b)
+print(c)
+
+#[[ 2.00]
+# [-1.00]
+# [ 1.00]
+# [ 2.00]]
+
+print(a @ c) # checking the answer
+
+#[[5.00]
+# [4.00]
+# [4.00]
+# [0.00]]
+```
+
+```
+a = ml.Matrix([
+    [2, -4],
+    [-3, 6],
+])
+
+b = ml.Matrix([
+    [-1],
+    [2]
+])
+
+c = gaussian_elimination(a, b)
+print(c)
+
+#System of equations cannot be solved
+#[[]]
+```

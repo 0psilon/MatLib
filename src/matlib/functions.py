@@ -1,5 +1,5 @@
-from .classes import Matrix
 from .check import MatrixException
+from .classes import Matrix
 
 
 def det(matrix: Matrix) -> float:

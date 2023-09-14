@@ -1,3 +1,5 @@
+import os
+
 from .check import MatrixCheck, MatrixException
 
 
@@ -5,6 +7,13 @@ class Matrix:
     def __init__(self, matrix: list[list[float | int]]):
         
         self.matrix = MatrixCheck(matrix=matrix).matrix
+        self.n_digits = os.environ.get('n_digits')
+
+        if self.n_digits.isdigit():
+            self.n_digits = int(self.n_digits)
+        
+        else:
+            self.n_digits = 3
 
     @property
     def T(self):
@@ -27,8 +36,24 @@ class Matrix:
     def __len__(self):
         return len(self.matrix)
     
-    def __str__(self):
-        obj = '\n'.join([' ' + str(line).rjust(1) for line in self.matrix])
+    def __str__(self):        
+        flag = False
+        n, m = len(self.matrix), len(self.matrix[0])
+        check = [el for line in self.matrix for el in line]
+        mx = max([len(str(x).split('.')[0]) for x in check])
+
+        if min(check) < 0:
+            flag = True
+
+        new_matrix = [[None] * m for _ in range(n)]
+
+        for i in range(n):
+            for j in range(m):
+                new_matrix[i][j] = f'{self.matrix[i][j]:.{self.n_digits}f}'\
+                    .rjust((self.n_digits + mx + 1) if flag else (self.n_digits + mx))
+            new_matrix[i] = '[' + ' '.join(new_matrix[i]) + ']'
+
+        obj = '\n'.join([' ' + str(line).rjust(1) for line in new_matrix])
         obj = '[' + obj[1:] + ']'
 
         return obj
