@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "matlib"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Denis Demenkov <deniska_demenkov@mail.ru>"]
 readme = "README.md"
