@@ -9,11 +9,11 @@ class Matrix:
         self.matrix = MatrixCheck(matrix=matrix).matrix
         self.n_digits = os.environ.get('n_digits')
 
-        if self.n_digits.isdigit():
+        try:
             self.n_digits = int(self.n_digits)
-        
-        else:
-            self.n_digits = 3
+
+        except Exception:
+            self.n_digits = 3    
 
     @property
     def T(self):
