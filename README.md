@@ -248,7 +248,6 @@ b = ml.Matrix([
 ])
 
 c = ml.least_squares(a, b)
-
 print(c)
 
 #[[1.69]
