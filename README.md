@@ -31,23 +31,26 @@ print(a) # casting types
 # [1.0, 1.0]
 # [1.0, 1.0]
 # [1.0, 1.0]]
-
+```
+```
 print(a + b) # +, -, *, /, //, %
 
 #[[3.0, 3.0]
 # [3.0, 3.0]
 # [3.0, 3.0]
 # [3.0, 3.0]]
+```
 
-
+```
 print(a - 100) # +, -, *, /, //, %
 
 #[[-99.0, -99.0]
 # [-99.0, -99.0]
 # [-99.0, -99.0]
 # [-99.0, -99.0]]
+```
 
-
+```
 a *= 2.5 # inplace
 print(a)
 
@@ -55,7 +58,6 @@ print(a)
 # [2.5, 2.5]
 # [2.5, 2.5]
 # [2.5, 2.5]]
-
 ```
 
 ### Exponentiation:
@@ -132,11 +134,10 @@ print(a.size)
 
 ## The functions:
 
-1. Calculating the determinant of the matrix:
+#### 1. Calculating the determinant of the matrix:
 
-```
-func: det(matrix: ml.Matrix) -> float
-```
+**func:** det(*matrix: ml.Matrix*) -> *float*
+
 ```
 import matlib as ml
 
@@ -151,12 +152,11 @@ print(b)
 # 0.0
 ```
 
-2. Matrix multiplication:
-```
-func: mul(matrix_1: ml.Matrix,
-          matrix_2: ml.Matrix
-          ) -> ml.Matrix
-```
+#### 2. Matrix multiplication:
+**func:** mul(*matrix_1: ml.Matrix,
+               matrix_2: ml.Matrix*
+               ) -> *ml.Matrix*
+
 ```
 import matlib as ml
 
@@ -181,12 +181,10 @@ print(c)
 # [12.0, 12.0, 12.0, 12.0]]
 ```
 
-3. Matrix exponentiation:
-```
-func: pow(matrix: ml.Matrix,
-          exp: int = 1
-          ) -> ml.Matrix
-```
+#### 3. Matrix exponentiation:
+**func:** pow(*matrix: ml.Matrix,
+              exp: int = 1*
+              ) -> *ml.Matrix*
 ```
 import matlib as ml
 
