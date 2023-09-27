@@ -1,6 +1,6 @@
 # MATLIB
 
-MatLib is a little python 2D-matrix-handling library. The following documentation will guide you through!
+MatLib is a little python 2D-matrix-handling library. The following documentation will guide you:
 
 ### Getting started:
 ```
