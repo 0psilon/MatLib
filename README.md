@@ -1,6 +1,6 @@
 # MATLIB
 
-MatLib is a little python 2D-matrix-handling library. The following documentation will guide you through!
+MatLib is a little python 2D-matrix-handling library. The following documentation will guide you:
 
 ### Getting started:
 ```
@@ -200,7 +200,6 @@ print(b)
 
 # [[32.00, 32.00]
 #  [32.00, 32.00]]
-
 ```
 
 #### 4. Mqtrix transposing:
@@ -260,7 +259,7 @@ print(c)
                                 matrix_ans: ml.Matrix*
                                 ) -> *ml.Matrix*
 
-Solves a system of linear equations using the Gaussian Elimination method. The program responds whether the answer to the system exists, does not exist or is an infinite amount of answers.
+Solves a system of linear equations using the Gaussian Elimination method. The function responds whether the answer to the system exists, does not exist or is an infinite amount of answers.
 
 ```
 import matlib as ml
@@ -270,7 +269,6 @@ a = ml.Matrix([
     [2, 3, -1, 2],
     [1, -2, 2, -1],
     [1, 3, -1, 1]
-    
 ])
 
 b = ml.Matrix([
